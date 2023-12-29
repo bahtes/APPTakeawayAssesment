@@ -46,7 +46,8 @@ void Menu::ReadCSV(std::string filename)
 
 }
 
-void Menu::loadMenu(std::string& filename) {
+void Menu::loadMenu(std::string& filename) 
+{
 
 	char type;
 	std::string name;
@@ -105,34 +106,53 @@ void Menu::loadMenu(std::string& filename) {
 	}
 }
 
-void Menu::add(Item* item) {
-	items.push_back(item);
-}
-
-void Menu::get()
+std::string Menu::add(Item* item) 
 {
-	choice = items[0];
+	items.push_back(item);
+	return item->getName() + " has been added to menu\n\n";
 }
 
-void Menu::removeItem(int index) {
+Item* Menu::getItem(int i)
+{
+	choice = items[i - 1];
+	return choice;
+}
+
+std::string Menu::removeItem(int index) 
+{
 	if (index > 0 && index <= items.size()) {
+		std::string eraseMsg = items[index]->getName() + " has been removed from menu\n\n";
 		items.erase(items.begin() + index - 1);
+		return eraseMsg;
 	}
+	return "No item has been removed incorrect input\n\n";
 }
 
-double Menu::calculateTotal() {
-	double total = 0.0;
-	for (auto& item : items) {
-		total += item->getPrice();
-	}
-	return total;
-}
+std::string Menu::toString(bool txt) 
+{
+	bool ap = false;
+	bool main = false;
+	bool bev = false;
 
-std::string Menu::toString() {
 	std::string result;
 	for (size_t i = 0; i < items.size(); ++i) 
 	{
-		result += "(" + std::to_string(i + 1) + ") " + items[i]->toString() + "\n";
+		if (items[i]->getType() == 'a' and !ap)
+		{
+			result += "\n\t(Appitisers)\n\n";
+			ap = true;
+		}
+		else if (items[i]->getType() == 'm' and !main)
+		{
+			result += "\n\t(Mains)\n\n";
+			main = true;
+		}
+		else if (items[i]->getType() == 'b' and !bev)
+		{
+			result += "\n\t(Beverages)\n\n";
+			bev = true;
+		}
+		result += "(" + std::to_string(i + 1) + ") " + items[i]->toString(txt) + "\n";
 	}
 	return result;
 }

@@ -5,8 +5,15 @@ MainCourse::MainCourse(std::string name, double price, int calories)
 
 MainCourse::~MainCourse()
 {
+
 }
 
-std::string MainCourse::toString()  {
-    return Item::toString();
+bool MainCourse::getTwoForOne()
+{
+    return false;
+}
+
+char MainCourse::getType()
+{
+    return 'm';
 }

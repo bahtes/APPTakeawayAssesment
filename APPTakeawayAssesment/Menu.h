@@ -8,14 +8,13 @@ public:
     ~Menu();
     void ReadCSV(std::string filename);
     void loadMenu(std::string& filename);
-    void add(Item* item) override;
-    void removeItem(int index) override;
-    double calculateTotal() override;
-    std::string toString() override;
+    std::string add(Item* item) override;
+    std::string removeItem(int index) override;
+    std::string toString(bool txt) override;
     bool toBool(std::string s);
     std::vector<Item*>& getItems() override;
+    Item* getItem(int i);
     Item* choice;
-    void get();
 
 private:
     std::vector<Item*> items;
