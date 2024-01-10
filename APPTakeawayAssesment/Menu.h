@@ -7,7 +7,7 @@ public:
     Menu(std::string filename);
     ~Menu();
     void ReadCSV(std::string filename);
-    void loadMenu(std::string& filename);
+    void loadMenu();
     std::string add(Item* item) override;
     std::string removeItem(int index) override;
     std::string toString(bool txt) override;

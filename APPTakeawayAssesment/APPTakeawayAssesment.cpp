@@ -28,21 +28,20 @@ int main()
 	string userCommand;
 	vector <string> parameters;
 
-	// Create a menu object from a CSV file
-	Menu menu = Menu("menu.csv");
+	
+	Menu menu = Menu("menu.csv");  //create a menu object from a CSV file
 
-	// Create an order object
-	Order order = Order();
+	Order order = Order();  //create an order object
 
-	Item* choice{};
+	Item* choice{};  //create and initialise a pointer of type Item
 
-	bool done = false;
+	bool done = false;  //create a boolean that is used to exit out of program gracefully when an checkout is complete
 
 	cout << "\nType help to see directions on how to use this program\n\n";
 
-	while (userCommand != "exit" and !done)
+	while (userCommand != "exit" and !done)  //while the user input isn't exit and done = false carry on the loop
 	{
-		getline(cin, userCommand);
+		getline(cin, userCommand);  //gets user input
 		char* cstr = new char[userCommand.length() + 1];
 		strcpy(cstr, userCommand.c_str());
 
@@ -57,19 +56,19 @@ int main()
 
 		string command = parameters[0];
 
-		if (command.compare("menu") == 0) {
+		if (command.compare("menu") == 0) {  //if user input is menu
 			cout << "\n";
 
-			cout << menu.toString(false);
+			cout << menu.toString(false);  //run menu to string with the argument false which indicates that the formatting is for console and not txt output
 
 			cout << "\n";
 		}
-		else if (command.compare("add") == 0)
+		else if (command.compare("add") == 0)  //if user menu is add
 		{
 			cout << "\n";
 
 			cout << "How many items would you like to add: ";
-			getline(cin, userCommand);
+			getline(cin, userCommand);  //gets user input
 			char* cstr = new char[userCommand.length() + 1];
 			strcpy(cstr, userCommand.c_str());
 
@@ -82,12 +81,20 @@ int main()
 
 			string multi = parameters[1];
 
-			int j = 2;
+			int j = 2;  //uses j to make sure parameters are correct if the for loop below is ran multiple times
 
-			for (int i = 0; i < stoi(multi); i++)
+			for (int i = 0; i < stoi(multi); i++)  //runs however many times the user specifies so they can add multiple items
 			{
-				cout << "What would you like to add for Item " << to_string(i + 1) << " (input the number next to the item in menu) ";
-				getline(cin, userCommand);
+				if (stoi(multi) > 1)  //if they want to add more than one item tells them which item they are on and changed grammar
+				{
+					cout << "What would you like to add for Item " << to_string(i + 1) << " (input the number next to the item in menu) ";  //what would you like to add for the current item
+				}
+				else
+				{
+					cout << "What would you like to add (input the number next to the item in menu) ";
+				}
+				
+				getline(cin, userCommand);  //gets user input
 				char* cstr = new char[userCommand.length() + 1];
 				strcpy(cstr, userCommand.c_str());
 
@@ -98,25 +105,24 @@ int main()
 				parameters.push_back(token);
 				token = strtok(NULL, " ");
 
-				string command = parameters[j];
+				string num = parameters[j];
 
 				j++;
 
-				string num = command;
-				choice = menu.getItem(stoi(num));
-				cout << order.add(choice);
+				choice = menu.getItem(stoi(num));  //sets choice equal to the specified item
+				cout << order.add(choice);  //adds the item to the order, returns string telling them if it has been sucessful or not, prints it
 			}
 
 			cout << "\n";
 		}
-		else if (command.compare("remove") == 0)
+		else if (command.compare("remove") == 0)  //if user input is remove
 		{
 			cout << "\n";
 
-			cout << order.toString(false);
+			cout << order.toString(false);  //outputs the current order with the argument false which indicates that the formatting is for console and not txt output
 
 			cout << "Which Item would you like to remove: ";
-			getline(cin, userCommand);
+			getline(cin, userCommand);  //user input
 			char* cstr = new char[userCommand.length() + 1];
 			strcpy(cstr, userCommand.c_str());
 
@@ -129,20 +135,20 @@ int main()
 
 			string rem = parameters[1];
 
-			cout << order.removeItem(stoi(rem));
+			cout << order.removeItem(stoi(rem));  //removes specified item, returns string telling them if it has been sucessful or not, prints it
 
 			cout << "\n";
 		}
-		else if (command.compare("checkout") == 0)
+		else if (command.compare("checkout") == 0)  //if user input is checkout
 		{
 			cout << "\n";
 
-			cout << order.toString(false) << "\n";
-			cout << "Savings: \x9C" << order.calculateSavings() << "\n";
-			cout << "Total: \x9C" << order.calculateTotal() << "\n";
+			cout << order.toString(false) << "\n";  //outputs the current order with the argument false which indicates that the formatting is for console and not txt output
+			cout << "Savings: \x9C" << order.calculateSavings() << "\n";  //outputs the savings for the order
+			cout << "Total: \x9C" << order.calculateTotal() << "\n";  //outputs the total for the order
 
 			cout << "Would you like to purchase and finalise order (y/n): ";
-			getline(cin, userCommand);
+			getline(cin, userCommand);  //user input
 			char* cstr = new char[userCommand.length() + 1];
 			strcpy(cstr, userCommand.c_str());
 
@@ -155,39 +161,39 @@ int main()
 
 			string checkingOut = parameters[1];
 
-			if (checkingOut.compare("y") == 0)
+			if (checkingOut.compare("y") == 0)  //if the user input is y
 			{
-				order.printReceipt();
+				order.printReceipt();  //saves recipt as txt
 				cout << "\nThank you for your order\n\n";
-				done = true;
+				done = true;  //sets done to true so while loop doesn't continue and exits program
 			}
-			else if (checkingOut.compare("n") == 0)
+			else if (checkingOut.compare("n") == 0)  //if user input is n
 			{
 				cout << "\nOrder not placed, you may edit your order\n\n";
 			}
-			else
+			else  //if user input isn't recognised
 			{
 				cout << "\Input not recognized, defaulted to N, Order not placed, you may edit your order\n\n";
 			}
 		}
-		else if (command.compare("help") == 0)
+		else if (command.compare("help") == 0)  //if user input is help
 		{
 			cout << "\nTo see the menu type 'menu'\nTo add items to your order type 'add'\nTo remove items from your order type 'remove'\nTo checkout type 'checkout'\nFor help type 'help'\nTo exit type 'exit'\n\n";
 		}
-		else
+		else if (!command.compare("exit") == 0) //if user input isn't recognised, !command.compare("exit") == 0 is there as otherwise it would output  "Input not recognized, please try again" when the input is exit
 		{
 			cout << "\nInput not recognized, please try again\n\n";
 		}
 
-		parameters.clear();
+		parameters.clear();  //resets parameters
 	
 	}
 
 	cout << "Press any key to quit...";
 	std::getchar();
 
-	delete choice;
-	menu.~Menu();
-	order.~Order();
+	delete choice;  //deletes choice
+	menu.~Menu();  //calls the menu deconstructor
+	order.~Order();  //calls the order deconstructor
 
 }

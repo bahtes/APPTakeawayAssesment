@@ -10,43 +10,41 @@
 #include "Beverage.h"
 
 
-Menu::Menu(std::string filename)
+Menu::Menu(std::string filename)  //constructor, takes the filename and calls ReadCSV with the filename as the argument
 {
 	ReadCSV(filename);
 }
 
-void Menu::ReadCSV(std::string filename)
+void Menu::ReadCSV(std::string filename)  //reads the CSV
 {
-	std::ifstream file(filename);
+	std::ifstream file(filename);  //opens file
 
-	if (!file.is_open()) {
-		std::cerr << "Error opening file: " << filename << std::endl;
+	if (!file.is_open()) {  //checks if file is open if not it outputs an error
+		std::cerr << "Error opening file: " << filename << "\n";
 	}
 
-	// Read the file line by line
 	std::string line;
-	while (std::getline(file, line)) {
+	while (std::getline(file, line)) //reads the file line by line
+	{
 		std::vector<std::string> row;
 		std::istringstream iss(line);
 		std::string value;
 
-		// Parse the line into comma-separated values
-		while (std::getline(iss, value, ',')) {
+		while (std::getline(iss, value, ',')) //puts each comma seperated variable into a vector for the row
+		{
 			row.push_back(value);
 		}
 
-		// Add the row to the CSV data
-		CSVData.push_back(row);
+		CSVData.push_back(row);  //pushes the row vector into the CSVData 2D vector
 	}
 
-	// Close the file
-	file.close();
+	file.close();  //closes file
 
-	loadMenu(filename);
+	loadMenu();  //runs loadMenu
 
 }
 
-void Menu::loadMenu(std::string& filename) 
+void Menu::loadMenu() //loads the menu
 {
 
 	char type;
@@ -58,7 +56,7 @@ void Menu::loadMenu(std::string& filename)
 	float abv;
 	int volume;
 
-	for (int i = 0; i < CSVData.size(); i++)
+	for (int i = 0; i < CSVData.size(); i++)  //gets all of the data from a row of the menu and puts in into variables, it uses these variables to create a new object of its respective type
 	{
 
 		type = CSVData[i][0][0];
@@ -106,19 +104,19 @@ void Menu::loadMenu(std::string& filename)
 	}
 }
 
-std::string Menu::add(Item* item) 
+std::string Menu::add(Item* item) //a function that can be used to add an item to the menu 
 {
 	items.push_back(item);
 	return item->getName() + " has been added to menu\n\n";
 }
 
-Item* Menu::getItem(int i)
+Item* Menu::getItem(int i)  //gets an item from the menu
 {
 	choice = items[i - 1];
 	return choice;
 }
 
-std::string Menu::removeItem(int index) 
+std::string Menu::removeItem(int index) //removes an item from the menu
 {
 	if (index > 0 && index <= items.size()) {
 		std::string eraseMsg = items[index]->getName() + " has been removed from menu\n\n";
@@ -128,7 +126,7 @@ std::string Menu::removeItem(int index)
 	return "No item has been removed incorrect input\n\n";
 }
 
-std::string Menu::toString(bool txt) 
+std::string Menu::toString(bool txt) //gets the titles for the item type in the menu
 {
 	bool ap = false;
 	bool main = false;
@@ -157,7 +155,7 @@ std::string Menu::toString(bool txt)
 	return result;
 }
 
-bool Menu::toBool(std::string s)
+bool Menu::toBool(std::string s)  //transforms a string to a bool
 {
 	if (s == "y")
 	{
@@ -174,12 +172,12 @@ bool Menu::toBool(std::string s)
 	}
 }
 
- std::vector<Item*>& Menu::getItems()  
+ std::vector<Item*>& Menu::getItems()  //returns all items in the menu
 {
 	return items;
 }
 
-Menu::~Menu()
+Menu::~Menu()  //menu deconstructor
 {
 	for (Item* item : items)
 	{

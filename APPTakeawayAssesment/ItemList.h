@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-class ItemList {
+class ItemList {  //abstract class, everything is to be overriden
 public:
     virtual std::string add(Item* item) = 0;
     virtual std::string removeItem(int index) = 0;
